@@ -1,0 +1,42 @@
+<% include partials/header %>
+<% include partials/navbar %>
+<div class='container'>
+    
+    <div class='jumbotron'>
+        <h1>Your Addresses</h1>
+        <p>
+            <%= email %>
+        </p>
+        <button id='addAddressBtn' type="button" class="btn" onclick="window.location.href='/add'">Add an Address</button>
+    </div>
+    <% for(var i = 0; i < data.length; i++) { %>
+        <div class="list-group">
+            <a href="/address/<%=data[i].addr%>" class="list-group-item">
+                <span class='numTrans'>
+                    <%= balances[data[i].addr].ntx %> Transactions -
+                    <% if (balances[data[i].addr].ntx - data[i].num > 0 ) { %>
+                        <strong><%= balances[data[i].addr].ntx - data[i].num %> Unseen</strong>
+                    <% } else { %>
+                        <%=balances[data[i].addr].ntx - data[i].num %> Unseen
+                    <% } %>
+                </span>
+                <span class='balLabel'>
+                    <p>Remaining Balance</p>
+                    <span class="badge">
+                        <%= balances[data[i].addr].btc %> BTC / <%= balances[data[i].addr].usd %> USD
+                    </span>
+                </span>
+                
+                
+                <h3 class="list-group-item-heading addrLabel">
+                    <%= data[i].label %>
+                </h3>
+                <p class="list-group-item-text addrLabel">
+                    <%= data[i].addr %>
+                </p>
+
+            </a>
+        </div>
+    <% } %>
+</div>
+<% include partials/footer %>

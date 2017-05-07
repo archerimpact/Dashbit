@@ -1,0 +1,76 @@
+<% include partials/header %>
+<% include partials/navbar %>
+<div class='container'>
+    <div class="page-header">
+      <h1> <% if (dbData != "") { %>
+        <%= dbData.Label %><br> 
+        <% } %>
+      <small><%= btcData.address %></small></h1>
+      <h3>Unspent Balance: <%= btcData.final_balance / 100000000 %> BTC</h3>
+    </div>
+    
+    <div class="panel panel-default">
+      <!-- Default panel contents -->
+      <div class="panel-heading">Transactions - <%= btcData.n_tx %></div>
+    
+      <!-- Table -->
+      <table class="table">
+          <thead>
+              <tr>
+                  <th>Date</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Amount</th>
+                  <th>Balance</th>
+              </tr>
+          </thead>
+          <tbody>
+            <% var bal = btcData.final_balance  %>
+            <% for (var i = 0; i < btcData.txs.length; i++) { %>
+              <tr>
+                <% var tx = btcData.txs[i] %>
+                <% var sent = 0 %>
+                <% var received = 0 %>
+                <th>
+                  <% var d = new Date(tx.time * 1000) %>
+                  <% var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] %>
+                  <%= d.getDate() %> <%= months[d.getMonth() - 1] %> <%= d.getFullYear() %> <br>
+                  <%= d.getHours() %>:<%= d.getMinutes() %>:<%= d.getSeconds() %>
+                </th>
+                <th>
+                  <% for (var j = 0; j < tx.inputs.length; j++) { %>
+                  <a href='/address/<%= tx.inputs[j].prev_out.addr %>'>
+                    <%= tx.inputs[j].prev_out.addr %></a> <br>
+                    <% if (tx.inputs[j].prev_out.addr === btcData.address) { %>
+                      <% sent += -1 * tx.inputs[j].prev_out.value %>
+                    <% } %>
+                  <% } %>
+                </th>
+                
+                <th>
+                  <% for (var k = 0; k < tx.out.length; k++) { %>
+                  <a href='/address/<%= tx.out[k].addr %>'>
+                    <%= tx.out[k].addr %></a> <br>
+                    <% if (tx.out[k].addr === btcData.address) { %>
+                      <% received += tx.out[k].value %>
+                    <% } %>
+                  <% } %>
+                </th>
+                <th>
+                  <% if (sent + received > 0) { %>
+                    <span style='color:green'>+<%= (sent + received) / 100000000 %></span>
+                  <% } else { %>
+                    <span style='color:red;'><%= (sent + received) / 100000000 %></span>
+                  <% } %>
+                </th>
+                <th><%= bal / 100000000 %></th>
+                <% bal -= (sent + received) %>
+              </tr>
+            <% } %>
+          </tbody>
+      </table>
+    </div>
+</div>
+    
+
+<% include partials/footer %>
