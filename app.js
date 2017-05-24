@@ -19,6 +19,8 @@ var config = {
   };
 firebase.initializeApp(config);
 
+var labels = {};
+
 
 app.get("/", function(req, res) {
     var user = firebase.auth().currentUser;
@@ -27,31 +29,36 @@ app.get("/", function(req, res) {
     if (user) {
         var username = user.email.split("@")[0];
         firebase.database().ref('/Users/' + username).once('value').then(function(snapshot) {
-            for (var key in snapshot.val()) {
-                var addr = snapshot.val()[key]["Address"];
-                var label = snapshot.val()[key]["Label"];
-                var n = snapshot.val()[key]["NumTx"];
-                var obj = {
-                    addr: addr,
-                    label: label,
-                    num: n
+            if (snapshot.val() != null) {
+                for (var key in snapshot.val()) {
+                    var addr = snapshot.val()[key]["Address"];
+                    var label = snapshot.val()[key]["Label"];
+                    var n = snapshot.val()[key]["NumTx"];
+                    labels[addr] = label;
+                    var obj = {
+                        addr: addr,
+                        label: label,
+                        num: n
+                    }
+                    addresses.push(obj);
                 }
-                addresses.push(obj);
-            }
-            var finished = _.after(addresses.length, doRender);
-            for (var i = 0; i < addresses.length; i++) {
-                blockexplorer.getAddress(addresses[i].addr).then(function(obj) {
-                    var b = (obj.final_balance / 100000000);
-                    var n = obj.n_tx;
-                    exchange.fromBTC(obj.final_balance, "USD").then(function(dollars) {
-                        balances[obj.address] = {
-                            btc: b,
-                            usd: dollars,
-                            ntx: n
-                        };
-                        finished();
-                    })
-                });
+                var finished = _.after(addresses.length, doRender);
+                for (var i = 0; i < addresses.length; i++) {
+                    blockexplorer.getAddress(addresses[i].addr).then(function(obj) {
+                        var b = (obj.final_balance / 100000000);
+                        var n = obj.n_tx;
+                        exchange.fromBTC(obj.final_balance, "USD").then(function(dollars) {
+                            balances[obj.address] = {
+                                btc: b,
+                                usd: dollars,
+                                ntx: n
+                            };
+                            finished();
+                        })
+                    });
+                }
+            } else {
+                doRender();
             }
         });
 	    
@@ -104,10 +111,10 @@ app.get('/address/:addr', function(req, res) {
                 if (k === "") {
                     dbData = "";
                 } else {
+                    firebase.database().ref().child("Users").child(username).child(k).child("NumTx").set(data.n_tx);
                     dbData = snapshot.val()[k];
                 }
-                // console.log(data.txs[0].inputs);
-                res.render('individual', {btcData: data, dbData: dbData});
+                res.render('individual', {btcData: data, dbData: dbData, labels: labels, blockexplorer: blockexplorer});
             });
         });
     } else {
@@ -117,10 +124,12 @@ app.get('/address/:addr', function(req, res) {
 
 app.get('/add', function(req, res) {
     var user = firebase.auth().currentUser;
-    if(user) {
+    if (user) {
         res.render("addAddress");
+    } else {
+      res.redirect('/login');  
     }
-    res.redirect('/login')
+    
 });
 
 app.post('/add', function(req, res) {
@@ -140,10 +149,103 @@ app.post('/add', function(req, res) {
         	});
         	res.redirect('/');
         });
-    } else {
-        res.redirect('/login');
     }
 });
+
+app.post('/createAccount', function(req, res) {
+    var email = req.body.email;
+    var password = req.body.password;
+    var confirmpassword = req.body.confirm;
+	if (email != '' && password != '') {
+		firebase.auth()
+		.createUserWithEmailAndPassword(email, password)
+		.then(function(user) {
+		    firebase.auth()
+            .signInWithEmailAndPassword(email, password)
+            .then(function(user) { 
+                var username = email.split("@")[0];
+                res.redirect('/'); 
+            })
+            .catch(function(){});
+		        res.redirect('/login');
+		    })
+		.catch(function(error) {
+		    console.log(error);
+		    res.redirect('/login');
+		});
+	}
+});
+
+app.get('/address/:addr/report/:txindex', function(req, res) {
+    var importantInputs = [];
+    var rootAddr = req.params.addr;
+    var minInputDepth = 10000000000;
+    var minOutputDepth = 1000000000000;
+    var importantOutputs = [];
+    var outBool = true;
+    var inBool = true;
+    
+    function searchBack(address, num, path) {
+        var endPoints = [];
+        blockexplorer.getAddress(address).then(function(data) {
+            console.log(data);
+            if (data.n_tx < 3 && inBool) {
+                data.txs[1].inputs.forEach(function(input) {
+                    var p = path;
+                    var amt = 0;
+                    for (var k = 0; k < data.txs[1].out.length; k++) {
+                        if (data.txs[1].out[k].addr == address) {
+                            amt = data.txs[1].out[k].value;
+                        }
+                    }
+                    var obj = {
+                        addr: address,
+                        date: new Date(data.txs[1].time * 1000),
+                        amt: amt
+                    }
+                    if (p.indexOf(obj) == -1) {
+                        p.push(obj);
+                        searchBack(input.prev_out.addr, num + 1, p);
+                    }
+                });
+            } else if (importantInputs.indexOf(address) == -1 && num <= minInputDepth && address != rootAddr) {
+                importantInputs.push(address);
+                minInputDepth = num;
+                inBool = false;
+                var p = path;
+                var obj = {
+                    addr: address,
+                }
+                path.push(obj);
+                res.render('report', {path: p});
+            }
+        });
+    }
+    var tx_index = req.params.txindex;
+    blockexplorer.getTx(tx_index).then(function(data) {
+        for (var i = 0; i < data.inputs.length; i++) {
+            var path = [];
+            var amt = 0;
+            for (var k = 0; k < data.out.length; k++) {
+                if (data.out[k].addr == rootAddr) {
+                    amt = data.out[k].value;
+                }
+            }
+            var obj = {
+                addr: rootAddr,
+                date: new Date(data.time * 1000),
+                amt: amt
+            }
+            path.push(obj);
+            searchBack(data.inputs[i].prev_out.addr, 1, path);
+        }
+    });
+});
+
+app.post('/search', function(req, res) {
+    var addr = req.body.searchAddr;
+    res.redirect('/address/' + addr);
+})
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("Server has started!");

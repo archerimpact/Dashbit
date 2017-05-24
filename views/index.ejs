@@ -1,25 +1,35 @@
 <% include partials/header %>
 <% include partials/navbar %>
 <div class='container'>
-    
+
     <div class='jumbotron'>
         <h1>Your Addresses</h1>
         <p>
             <%= email %>
         </p>
         <button id='addAddressBtn' type="button" class="btn" onclick="window.location.href='/add'">Add an Address</button>
+        <form action='/search', method='POST'>
+            <div class="input-group input-group-lg">
+              <input type="text" id="searchAddr" class="form-control" name='searchAddr' placeholder="Search for an address..." aria-describedby="sizing-addon1">
+            </div>
+        </form>
+            
     </div>
     <% for(var i = 0; i < data.length; i++) { %>
         <div class="list-group">
             <a href="/address/<%=data[i].addr%>" class="list-group-item">
-                <span class='numTrans'>
+                <span class='rightTrans'>
                     <%= balances[data[i].addr].ntx %> Transactions -
                     <% if (balances[data[i].addr].ntx - data[i].num > 0 ) { %>
                         <strong><%= balances[data[i].addr].ntx - data[i].num %> Unseen</strong>
                     <% } else { %>
                         <%=balances[data[i].addr].ntx - data[i].num %> Unseen
                     <% } %>
+                    <button id='<%= data[i].addr %>' class="btn btn-danger btn-xs trash" data-toggle="modal">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
                 </span>
+                
                 <span class='balLabel'>
                     <p>Remaining Balance</p>
                     <span class="badge">
