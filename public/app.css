@@ -102,6 +102,7 @@
 #logoutBtn {
 	background-color: transparent;
 	margin-top: 6.5px;
+	color: #777;
 }
 
 .jumbotron {
@@ -355,4 +356,17 @@ svg {
   width: 1000px;
   margin-top: 5px;
   margin-bottom: 15px;
+}
+
+#note-view {
+  margin: 10px;
+}
+
+.delete-note-btn-form {
+  float: right;
+}
+
+.delete-note-btn {
+  background: none;
+  border: none;
 }

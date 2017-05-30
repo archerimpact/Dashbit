@@ -5,48 +5,50 @@
     <div class='jumbotron'>
         <h1>Your Addresses</h1>
         <p>
-            <%= email %>
+            <%= currentUser.username %>
         </p>
-        <button id='addAddressBtn' type="button" class="btn" onclick="window.location.href='/add'">Add an Address</button>
-        <form action='/search', method='POST'>
-            <div class="input-group input-group-lg">
+        <a id='addAddressBtn' type ='button' class="btn" href='/addresses/new'>Add an Address</a>
+        <form action='/addresses/search' method='POST'>
+            <div class="form-group form-group-lg">
               <input type="text" id="searchAddr" class="form-control" name='searchAddr' placeholder="Search for an address..." aria-describedby="sizing-addon1">
             </div>
         </form>
             
     </div>
-    <% for(var i = 0; i < data.length; i++) { %>
+    <% data.forEach(function(addressData) { %>
         <div class="list-group">
-            <a href="/address/<%=data[i].addr%>" class="list-group-item">
+            <a href="/addresses/<%=addressData.addr%>" class="list-group-item">
                 <span class='rightTrans'>
-                    <%= balances[data[i].addr].ntx %> Transactions -
-                    <% if (balances[data[i].addr].ntx - data[i].num > 0 ) { %>
-                        <strong><%= balances[data[i].addr].ntx - data[i].num %> Unseen</strong>
+                    <%= balances[addressData.addr].ntx %> Transactions -
+                    <% if (balances[addressData.addr].ntx - addressData.num > 0 ) { %>
+                        <strong><%= balances[addressData.addr].ntx - addressData.num %> Unseen</strong>
                     <% } else { %>
-                        <%=balances[data[i].addr].ntx - data[i].num %> Unseen
+                        0 Unseen
                     <% } %>
-                    <button id='<%= data[i].addr %>' class="btn btn-danger btn-xs trash" data-toggle="modal">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>
+                    <form style='display:inline' action='/addresses/<%= addressData.addr %>?_method=DELETE' method='POST'>
+                        <button class="btn btn-danger btn-xs trash">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </form>
                 </span>
                 
                 <span class='balLabel'>
                     <p>Remaining Balance</p>
                     <span class="badge">
-                        <%= balances[data[i].addr].btc %> BTC / <%= balances[data[i].addr].usd %> USD
+                        <%= balances[addressData.addr].btc %> BTC / <%= balances[addressData.addr].usd %> USD
                     </span>
                 </span>
                 
                 
                 <h3 class="list-group-item-heading addrLabel">
-                    <%= data[i].label %>
+                    <%= addressData.label %>
                 </h3>
                 <p class="list-group-item-text addrLabel">
-                    <%= data[i].addr %>
+                    <%= addressData.addr %>
                 </p>
 
             </a>
         </div>
-    <% } %>
+    <% }) %>
 </div>
 <% include partials/footer %>
