@@ -155,11 +155,11 @@ router.delete('/addresses/:addr/:note_id', middleware.isLoggedIn, function(req, 
     })
 });
 
-router.get('/addresses/:addr/report/:tx_id', middleware.isLoggedIn, function(req, res) {
-    blockexplorer.getTx(req.params.tx_id).then(function(data) {
-        res.render('txreport', {data: data, path: '', rootAddr: req.params.addr});
-    });
-});
+// router.get('/addresses/:addr/report/:tx_id', middleware.isLoggedIn, function(req, res) {
+//     blockexplorer.getTx(req.params.tx_id).then(function(data) {
+//         res.render('txreport', {data: data, path: '', rootAddr: req.params.addr});
+//     });
+// });
 
 // router.get('/addresses/:addr/report/:tx_id/in/:num', middleware.isLoggedIn, function(req, res) {
 //     var tx_index = req.params.tx_id;
