@@ -14,7 +14,9 @@ var _                       = require('underscore-node'),
 var utilRoutes = require('./routes/util'),
     addressRoutes = require('./routes/address');
 
-mongoose.connect("mongodb://localhost/blockchain_dashboard");
+// mongoose.connect("mongodb://localhost/blockchain_dashboard");
+mongoose.connect("mongodb://ryan:d33badm1n@ds161551.mlab.com:61551/blockchain-dashboard");
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
