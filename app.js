@@ -15,7 +15,7 @@ var utilRoutes = require('./routes/util'),
     addressRoutes = require('./routes/address');
 
 // mongoose.connect("mongodb://localhost/blockchain_dashboard");
-mongoose.connect("mongodb://ryan:d33badm1n@ds161551.mlab.com:61551/blockchain-dashboard");
+mongoose.connect(process.env.DATABASEURL);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
