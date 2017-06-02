@@ -1,0 +1,103 @@
+<% include partials/header %>
+<% include partials/navbar %>
+<div class="page-header" id='reportHeader'>
+  	<h1>Transaction Report<br>
+  	    <small>Transaction ID: <%= data.tx_index %></small>
+  	</h1>
+  	<div class='container'>
+      	<div class="panel panel-default">
+            <div class="panel-body">
+                <div style='float:left' class='panel-left'>
+                    <h4>Inputs</h4>
+                    <table class='table'>
+                        <thead>
+                            <tr>
+                                <th>Address</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < data.inputs.length; i++) { %>
+                            <% var input = data.inputs[i] %>
+                                <tr>
+                                    <td>
+                                        <% if (input.prev_out.addr != rootAddr) { %>
+                                            <a href='/addresses/<%= rootAddr %>/report/<%= data.tx_index %>/in/<%= i %>'>
+                                        <% } %>   
+                                            <%= input.prev_out.addr %>
+                                        <% if (input.prev_out.addr != rootAddr) { %>
+                                            </a>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <span style='color: red'>-<%= input.prev_out.value / 100000000 %></span>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+                <div style='display:inline'>
+                    <span style='font-size:5em' class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                </div>
+                <div style='float:right' class='panel-right'>
+                    <h4>Outputs</h4>
+                    <table class='table'>
+                        <thead>
+                            <tr>
+                                <th>Address</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < data.out.length; i++) { %>
+                                <% var output = data.out[i] %>
+                                <tr>
+                                    <td>
+                                        <% if (output.addr != rootAddr) { %>
+                                            <a href='/addresses/<%= rootAddr %>/report/<%= data.tx_index %>/out/<%= i %>'>
+                                        <% } %>
+                                            <%= output.addr %>
+                                        <% if (output.addr != rootAddr) { %>
+                                            </a>
+                                        <% } %>
+                                    </td>
+                                    <td><span style='color: green'>+<%= output.value / 100000000 %></span></td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% if (path != '') { %>
+    <div id='backgroundTimeline'>
+        <section class="timeline">
+          <ul>
+            <% for (var i = 0; i < path.length; i++) { %>
+                <li onclick="window.location.href='/addresses/<%= path[i].addr %>'">
+                  <div>
+                    <strong><%= path[i].addr %></strong> <br>
+                    <% if (i != path.length - 1) { %>
+                        Received <%= path[i].amt / 100000000 %> BTC <br>
+                        <%= path[i].date %>
+                    <% } else { %>
+                        <% if (path[i].amt) { %>
+                             Received <%= path[i].amt / 100000000 %> BTC <br>
+                            <%= path[i].date %><br>
+                        <% } %>
+                        Node of Interest
+                    <% } %>
+                  </div>
+                </li>
+            <% } %>
+          </ul>
+        </section>
+    </div>
+<% }%>
+
+
+<script type='text/javascript' src='/report.js'></script>
+<% include partials/footer %>
