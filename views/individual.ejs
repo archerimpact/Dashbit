@@ -16,19 +16,21 @@
 
     <div class="panel panel-login">
           <% var colsize = '' %>
-          <% if (dbData != "") { 
-            colsize = 'col-xs-4'
+          <% if (dbData != "") {
+            colsize= 'col-xs-6'
+            // colsize = 'col-xs-4'
           } else {
-            colsize = 'col-xs-6'
+            colsize = 'col-xs-12'
+            // colsize = 'col-xs-6'
           } %>
 					<div class="panel-heading">
 						<div class="row">
 							<div class="<%= colsize %>">
 								<a href="#" class="active" id="transaction-view-link">Transactions</a>
 							</div>
-							<div class="<%= colsize %>">
-								<a href="#" id="graph-view-link">Graph</a>
-							</div>
+							<!--<div class="<%= colsize %>">-->
+							<!--	<a href="#" id="graph-view-link">Graph</a>-->
+							<!--</div>-->
 							<% if (dbData != "") { %>
   							<div class='col-xs-4'>
   							  <a href='#' id="note-view-link">Notes</a>
@@ -47,7 +49,6 @@
                             <th>To</th>
                             <th>Amount</th>
                             <th>Balance</th>
-                            <th>Explore</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -187,18 +188,13 @@
                           </td>
                           <td><%= bal / 100000000 %></td>
                           <% bal -= (sent + received) %>
-                          <td align='center'>
-                              <a href='/addresses/<%= btcData.address %>/report/<%= tx.tx_index %>' class='btn btn-success btn-xs'>
-                                <span class="glyphicon glyphicon-collapse-down"></span>
-                              </a>
-                          </td>
                         </tr>
                       <% } %>
                     </tbody>
                 </table>
               </div>
-              <div id="graph-view" style="display: none;">
-              </div>
+              <!--<div id="graph-view" style="display: none;">-->
+              <!--</div>-->
               <% if (dbData != "")  { %>
                 <div id='note-view' style="display: none;">
                   <form action='/addresses/<%= btcData.address %>' method='POST'>
