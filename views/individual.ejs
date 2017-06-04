@@ -61,7 +61,7 @@
                           <td>
                             <% var d = new Date(tx.time * 1000) %>
                             <% var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] %>
-                            <%= d.getDate() %> <%= months[d.getMonth() - 1] %> <%= d.getFullYear() %> <br>
+                            <%= d.getDate() %> <%= months[d.getMonth()] %> <%= d.getFullYear() %> <br>
                             <%= d.getHours() %>:<%= d.getMinutes() %>:<%= d.getSeconds() %>
                           </td>
                           <td>
