@@ -11,7 +11,9 @@
         <% } %>
       <small><%= btcData.address %></small></h1>
       <h3>Unspent Balance: <%= btcData.final_balance / 100000000 %> BTC</h3>
-      <p><strong>Description:</strong><br><%= dbData.desc %></p>
+      <% if (dbData.desc) { %>
+        <p><strong>Description:</strong><br><%= dbData.desc %></p>
+      <% } %>
     </div>
 
     <div class="panel panel-login">
@@ -49,6 +51,7 @@
                             <th>To</th>
                             <th>Amount</th>
                             <th>Balance</th>
+                            <th>Explore</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,6 +191,11 @@
                           </td>
                           <td><%= bal / 100000000 %></td>
                           <% bal -= (sent + received) %>
+                          <td align='center'>
+                              <a href='/addresses/<%= btcData.address %>/report/<%= tx.tx_index %>/explore?depth=3&ntx=4&addrPerTx=4' class='btn btn-success btn-xs'>
+                                <span class="glyphicon glyphicon-collapse-down"></span>
+                              </a>
+                          </td>
                         </tr>
                       <% } %>
                     </tbody>

@@ -370,3 +370,91 @@ svg {
   background: none;
   border: none;
 }
+
+.invisible {
+  display: none;
+}
+
+#report-body {
+  margin-top: 30px;
+}
+
+.horiz {
+  float:left;
+  margin:10px;
+}
+
+input.horiz {
+  width: 30px;
+}
+
+label.horiz {
+  height: 50PX;
+}
+
+.ofInterest {
+  background-color: AliceBlue;
+}
+
+#report-data {
+  margin-top: 50px;
+}
+
+#advanced-submit {
+  float: right;
+  margin-top: 30px;
+}
+
+#report-panel {
+  padding-bottom: 0;
+}
+
+#report-body {
+  margin-top: 10px;
+}
+
+#rp {
+  margin-bottom: 0;
+}
+
+#backToReport {
+  float:left;
+  display:none;
+  margin-top: 6px;
+}
+
+#showAdvancedBtn {
+  float:right;
+  margin-top: 3px;
+}
+
+#sortButton {
+  margin-top: 3px;
+}
+
+.footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  position: relative;
+  padding-bottom: 6rem;
+  min-height: 100%;
+}

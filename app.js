@@ -12,10 +12,12 @@ var _                       = require('underscore-node'),
     methodOverride          = require('method-override');;
     
 var utilRoutes = require('./routes/util'),
-    addressRoutes = require('./routes/address');
+    addressRoutes = require('./routes/address'),
+    reportRoutes = require('./routes/report');
 
 // mongoose.connect("mongodb://localhost/blockchain_dashboard");
-mongoose.connect(process.env.DATABASEURL);
+var url = process.env.DATABASEURL || "mongodb://localhost/blockchain_dashboard"
+mongoose.connect(url);
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
@@ -37,6 +39,7 @@ app.use(function(req, res, next) {
     next();
 });
 app.use(addressRoutes);
+app.use(reportRoutes);
 app.use(utilRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function() {
