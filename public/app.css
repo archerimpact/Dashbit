@@ -458,3 +458,11 @@ body {
   padding-bottom: 6rem;
   min-height: 100%;
 }
+
+#bottomTable {
+  float: right;
+}
+
+#bottomText {
+  margin-right: 15px;
+}

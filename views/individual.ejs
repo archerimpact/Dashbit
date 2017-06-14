@@ -200,6 +200,40 @@
                       <% } %>
                     </tbody>
                 </table>
+                <div id='bottomTable'>
+                  <% 
+                    var numPages = btcData.n_tx / 50
+                    var currentPage = 1;
+                    var totalPages = 1;
+                    var firstShown = 1;
+                    var lastShown = 1;
+                    if (numPages <= 1) {
+                      currentPage = 1;
+                      totalPages = 1;
+                      firstShown = 1
+                      lastShown = btcData.n_tx
+                    } else if (btcData.n_tx % 50 == 0) {
+                      currentPage = (offset + 50) / 50
+                      totalPages = btcData.n_tx / 50
+                      firstShown = offset + 1
+                      lastShown = offset + 50
+                    } else {
+                      currentPage = Math.floor((offset + 50) / 50)
+                      totalPages = Math.floor(btcData.n_tx / 50) + 1
+                      firstShown = offset + 1
+                      lastShown = Math.min(offset + 50, btcData.n_tx)
+                    } 
+                  %>
+                  <span id='bottomText'>
+                    Showing transactions <%= firstShown %>-<%= lastShown %> | Page <%= currentPage %>/<%= totalPages %>
+                  </span>
+                  <% if (currentPage != 1) { %>
+                    <a class='btn btn-xs btn-primary' href='/addresses/<%= btcData.address %>?offset=<%= offset - 50 %>'>Previous page </a>
+                  <% } %>
+                  <% if (currentPage != totalPages) { %>
+                    <a class='btn btn-xs btn-primary' href='/addresses/<%= btcData.address %>?offset=<%= offset + 50 %>'>Next page</a>
+                  <% } %>
+                </div>
               </div>
               <!--<div id="graph-view" style="display: none;">-->
               <!--</div>-->

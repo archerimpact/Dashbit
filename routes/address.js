@@ -75,6 +75,10 @@ router.post('/addresses/', middleware.isLoggedIn, function(req, res) {
 
 router.get('/addresses/:addr', [middleware.isLoggedIn, middleware.isValidAddr], function(req, res) {
     var dbData = "";
+    var offset = 0
+    if (req.query.offset) {
+            offset = Number(req.query.offset)
+        }
     User.findById(req.user.id).populate('addresses').exec(function(err, userData) {
         if (err) {
             console.log(err);
@@ -90,7 +94,13 @@ router.get('/addresses/:addr', [middleware.isLoggedIn, middleware.isValidAddr], 
         if (userAddressFilter.length > 0) {
             dbData = userAddressFilter[0];
         }
-        blockexplorer.getAddress(req.params.addr).then(function(data) {
+        
+        var options = {
+            limit: 1000,
+            offset: offset
+        }
+        
+        blockexplorer.getAddress(req.params.addr, options).then(function(data) {
             if (dbData != "" && dbData.num != data.n_tx) {
                 Address.findOneAndUpdate({user:req.user._id, addr:req.params.addr}, {$set:{num:data.n_tx}}, {new: true}).populate('notes').exec(function(err, updatedAddress) {
                     if(err) {
@@ -98,18 +108,18 @@ router.get('/addresses/:addr', [middleware.isLoggedIn, middleware.isValidAddr], 
                         res.redirect('/addresses');
                     }
                     console.log(updatedAddress);
-                    res.render('individual', {btcData: data, dbData: updatedAddress, labels: labels});
+                    res.render('individual', {btcData: data, dbData: updatedAddress, labels: labels, offset: offset});
                 });
             } else if (dbData != "") {
                 Address.findOne({user:req.user._id, addr: req.params.addr}).populate('notes').exec(function(err, newdata) {
                     if (err) {
                         res.redirect('/addresses');
                     } else {
-                        res.render('individual', {btcData: data, dbData: newdata, labels: labels});
+                        res.render('individual', {btcData: data, dbData: newdata, labels: labels, offset: offset});
                     }
                 });
             } else {
-                res.render('individual', {btcData: data, dbData: dbData, labels: labels});
+                res.render('individual', {btcData: data, dbData: dbData, labels: labels, offset: offset});
             }
         });
     });
