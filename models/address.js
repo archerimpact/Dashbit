@@ -14,6 +14,10 @@ var addressSchema = mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
+    },
+    folder: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Folder"
     }
 });
 

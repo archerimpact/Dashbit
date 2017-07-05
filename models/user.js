@@ -10,7 +10,23 @@ var UserSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Address"
         }
-    ]
+    ],
+    folders: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Folder"
+        }
+    ],
+    views: [
+        {
+            addr: String,
+            num: Number
+        }    
+    ],
+    lastOpen: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Folder"
+    }
 });
 
 UserSchema.plugin(passportLocalMongoose);

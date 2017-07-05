@@ -6,12 +6,17 @@ var _ = require('underscore-node');
 var Address = require('../models/address');
 var User = require('../models/user');
 var Note = require('../models/note');
+var Folder = require('../models/folder');
 var middleware = require('../middleware');
 
-router.get('/addresses/:addr/report/:tx_id/explore', middleware.isLoggedIn, function(req, res) {
+//GET /folders/:folderid/addresses/:addr/explore/:tx_id
+
+//Gets the transaction report for a transaction.
+router.get('/folders/:folderid/addresses/:addr/explore/:tx_id/', middleware.isLoggedIn, function(req, res) {
     var fringe = [];
     var dict = {};
     var txdata = "";
+    var folder = "";
     var txs = [];
     var labels = {};
     var backSearch = true;
@@ -21,11 +26,14 @@ router.get('/addresses/:addr/report/:tx_id/explore', middleware.isLoggedIn, func
     } else if (req.query.direction == 'forward') {
         backSearch = false;
     }
-    User.findById(req.user.id).populate('addresses').exec(function(err, userData) {
+    
+    Folder.findById(req.params.folderid).populate('addresses').exec(function(err, folderData) {
+    //User.findById(req.user.id).populate('addresses').exec(function(err, userData) {
         if (err) {
             console.log(err);
         }
-        userData.addresses.forEach(function(address) {
+        folder = folderData;
+        folderData.addresses.forEach(function(address) {
             labels[address.addr] = address.label;
         });
         //console.log(req.query);
@@ -265,7 +273,7 @@ router.get('/addresses/:addr/report/:tx_id/explore', middleware.isLoggedIn, func
         if (fringe.length > 0) {
             getForward(fringe.shift());
         } else {
-            res.render('txreport', {data: txdata, path: '', rootAddr: req.params.addr, dict: dict, labels: labels});
+            res.render('addresses/txreport', {data: txdata, path: '', rootAddr: req.params.addr, dict: dict, labels: labels, currentFolder: folder});
         }
     }
 });

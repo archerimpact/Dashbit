@@ -1,5 +1,118 @@
-<% include partials/header %>
-<% include partials/navbar %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dashbit</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css"></link>
+        <link rel="stylesheet" href="app.css"></link>
+        <link rel="stylesheet" type = "text/css" href="landpage.css">
+    </head>
+<body id = "page-top">
+    <!--Nav Bar -->
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+             <!--Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Dashbit</a>
+            </div>
 
+             <!--Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="/login">Login</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="/register">Register</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="https://www.archeratberkeley.com/team">About Us</a>
+                    </li>
+                </ul>
+            </div>
+             <!--/.navbar-collapse -->
+        </div>
+         <!--/.container-fluid -->
+    </nav>
 
-<% include partials/footer %>
+<!--Main Landing Page Content-->
+    <div class = "intro">
+        <div class = "inner">
+            <div class = "content">
+                <h1>Dashbit</h1>
+                <p class= "text-muted">Bitcoin at your fingertips.</p>
+                <a href="/login" class="btn btn-outline btn-xl page-scroll">Get Started!</a>
+            </div>
+        </div>
+    </div>
+    
+<!--Second Section-->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="section-heading">
+                        <h2>Store, Follow, and Share Investigations</h2>
+                        <p>Built for convenience.</p>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-present text-primary"></i>
+                                    <h3>Free to Use</h3>
+                                    <p class="text-muted">As an <a href = "https://www.archeratberkeley.com">Archer</a> house project, Dashbit is completely free to use.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-exclamation text-primary"></i>
+                                    <h3>Get Alerts</h3>
+                                    <p class="text-muted">Get alerts whenever addresses have new activity!</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-share text-primary"></i>
+                                    <h3>No Frills, Just Results</h3></h3>
+                                    <p class="text-muted">Modeled after a bank statement for maximum user familiarity, Dashbit just has the fastest and simplest interface.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-item">
+                                    <i class="icon-people text-primary"></i>
+                                    <h3>Collaborate</h3>
+                                    <p class="text-muted">Share investigations within your team or beyond, and leave notes and label addresses as a team.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="foot">&copy; Copyright 2017 Dashbit - An <a href='http://www.archeratberkeley.com'>Archer House</a> Project</div>
+
+    </section>
+    
+</body>
+
+<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type='text/javascript' src='/login.js'></script>
+    <script type='text/javascript' src='/switchView.js'></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type='text/javascript' src='/utils.js'></script>
+    <script type='text/javascript' src='/folders.js'></script>
+    </body>
+</html>

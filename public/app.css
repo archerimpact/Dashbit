@@ -129,9 +129,8 @@
 }
 
 #addAddressBtn {
-	background-color: #4285F4;
-	color: white;
-	margin-bottom: 10px;
+  float:right;
+  margin-right: 10px;
 }
 
 .badge {
@@ -432,11 +431,17 @@ label.horiz {
   margin-top: 3px;
 }
 
-.footer {
+.foot {
   position: absolute;
   right: 0;
   bottom: 0;
   left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+}
+
+#foot {
   padding: 1rem;
   background-color: #efefef;
   text-align: center;
@@ -465,4 +470,22 @@ body {
 
 #bottomText {
   margin-right: 15px;
+}
+
+#folderButton {
+  float: right;
+}
+
+#folderSelect {
+  margin-left: 10px;
+}
+
+.folderBtns {
+  float: left;
+  margin-right: 5px;
+}
+
+#loginfailed {
+  margin-top: 20px;
+  margin-bottom: 0px;
 }

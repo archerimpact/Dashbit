@@ -1,11 +1,11 @@
-function showAll(t, list, btcAddr) {
+function showAll(t, list, btcAddr, folder) {
 	var td = t.parentNode;
 	var str = "";
 	for (var i = 0; i < list.length; i += 2) {
 		if (list[i + 1] == btcAddr) {
 			str += "<strong>" + list[i] + "</strong><br>";
 		} else {
-			str += "<a href='/addresses/" + list[i + 1] + "'>" + list[i] + "</a><br>";
+			str += "<a href='/folders/" + folder + "/addresses/" + list[i + 1] + "'>" + list[i] + "</a><br>";
 		}
 	}
 	td.innerHTML = str;
@@ -14,7 +14,7 @@ function showAll(t, list, btcAddr) {
 var savedHtml = "";
 var container = "";
 
-function getPath(obj, path, dict, labels) {
+function getPath(obj, path, dict, labels, folder) {
 	container = document.getElementById('report-data');
 	savedHtml = container.innerHTML;
 	container.innerHTML = "";
@@ -39,7 +39,7 @@ function getPath(obj, path, dict, labels) {
 		if (labels[addr]) {
 		  label = labels[addr]
 		}
-		document.getElementById('pathUL').innerHTML += "<li onclick=\"window.location.href='/addresses/" + addr + "'\"><div><strong>" + label + "</strong><br>" + word + amt + "<br>" + date + "</div></li>";
+		document.getElementById('pathUL').innerHTML += "<li onclick=\"window.location.href='/folders/" + folder + "/addresses/" + addr + "/'\"><div><strong>" + label + "</strong><br>" + word + amt + "<br>" + date + "</div></li>";
 	});
 	startReport();
 }

@@ -9,20 +9,21 @@ var _                       = require('underscore-node'),
     LocalStrategy           = require('passport-local'),
     passportLocalMongoose   = require('passport-local-mongoose'),
     User                    = require('./models/user'),
-    methodOverride          = require('method-override');;
+    methodOverride          = require('method-override'),
+    flash                   = require('connect-flash');
+
     
-var utilRoutes = require('./routes/util'),
-    addressRoutes = require('./routes/address'),
-    reportRoutes = require('./routes/report');
+var addressRoutes = require('./routes/address'),
+    folderRoutes = require('./routes/folders'),
+    reportRoutes = require('./routes/report'),
+    utilRoutes = require('./routes/util');
 
-// mongoose.connect("mongodb://localhost/blockchain_dashboard");
 var url = process.env.DATABASEURL || "mongodb://localhost/blockchain_dashboard"
-mongoose.connect(url);
-
-app.use(bodyParser.urlencoded({extended: true}));
+mongoose.connect(url);app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
+app.use(flash());
 //  Passport Config
 app.use(require('express-session')({
     secret: 'your eyes, they turn me',
@@ -36,10 +37,14 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash('error');
+    res.locals.success = req.flash('success');
     next();
 });
+
 app.use(addressRoutes);
 app.use(reportRoutes);
+app.use(folderRoutes);
 app.use(utilRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function() {
