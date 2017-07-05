@@ -1,0 +1,55 @@
+<% include ../partials/header %>
+<% include ../partials/navbar %>
+<div class='container'>
+     <div class="page-header">
+      <h1>Add an Address</h1>
+    </div>
+    <div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<form id="login-form" action="/folders/<%= currentID %>/addresses" method="post" role="form" style="display: block;">
+									<div class="form-group">
+										<input type="text" name="address[label]" id="label" tabindex="1" class="form-control" placeholder="Label">
+									</div>
+									<div class="form-group">
+										<input type="text" name="address[addr]" id="addAddressBox" tabindex="2" class="form-control" placeholder="Address" value='<%= addr %>'>
+									</div>
+									<div class="form-group">
+										<textarea name="address[desc]" class='form-control' tabindex='3' placeholder='Description'></textarea>
+									</div>
+									<div class="form-group">
+										<label for='folder'>Select Folder:</label>
+										<select name="folder" id="folderSelect">
+										<% folders.forEach(function(folder) { %>
+											<% if (folder._id.equals(currentID)) { %>
+												<option value="<%= folder._id %>"><%= folder.name %></option>
+											<% } %>
+										<% }) %>
+										<% folders.forEach(function(folder) { %>
+											<% if (!folder._id.equals(currentID)) { %>
+												<option value="<%= folder._id %>"><%= folder.name %></option>
+											<% } %>
+										<% }) %>
+										</select>
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Submit">
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<% include ../partials/footer %>

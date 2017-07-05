@@ -1,0 +1,129 @@
+<% include ../partials/header %>
+<% include ../partials/navbar %>
+<div class='container'>
+
+    <div class='jumbotron'>
+        <h1>Your Addresses</h1>
+        <p>
+            <%= currentUser.username %>
+        </p>
+        
+        <form action='/folders/<%= currentFolder._id %>/addresses/search' method='POST'>
+            <div class="form-group form-group-lg">
+              <input type="text" id="searchAddr" class="form-control" name='searchAddr' placeholder="Search for an address..." aria-describedby="sizing-addon1">
+            </div>
+        </form>
+    </div>
+    <div id='folders'>
+        <div id='folderButton' class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Select Folder 
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <% folders.forEach(function(folder) { %>
+                    <li><a href='/folders/<%= folder._id %>'><%= folder.name %></a></li>
+                <% }) %>
+                <li role="separator" class="divider"></li>
+                <li><a href="/folders/new">Create new folder</a></li>
+            </ul>
+        </div>
+        <a id='addAddressBtn' type ='button' class="btn btn-primary" href='/folders/<%= currentFolder._id %>/addresses/new'>Add an Address</a>
+        <h3 id='folderTitle'><%= currentFolder.name %>
+        <% if (currentFolder.name == "General") { %>
+            <small><em>     All addresses added by you</em></small>
+        <% } else { %>
+            <small><em>     Admin: <%= currentFolder.admin.username %></em></small>
+        <% } %>
+        </h3>
+        <% if (currentFolder && currentFolder.name != 'General') { %>
+            <p><strong>Description:</strong> <%= currentFolder.desc %></p>
+        <% } %>
+        <% if (currentFolder && currentFolder.admin._id.equals(currentUser._id) && currentFolder.name != 'General') { %>
+            <a href='/folders/<%= currentFolder._id %>/contributors/new' class='btn btn-xs btn-success folderBtns'>Add Contributors</a>
+            <a href='/folders/<%= currentFolder._id %>/edit' class='btn btn-xs btn-warning folderBtns'>Edit Folder</a>
+            <form onsubmit="return confirm('Press OK to delete folder <%= currentFolder.name %>.');" action='/folders/<%=currentFolder._id %>?_method=DELETE' method='POST'>
+                <button class='btn btn-xs btn-danger folderBtns'>Delete Folder</button>
+            </form>
+        <% } %>
+        <% if (currentFolder && currentFolder.name != 'General') { %>
+            <button type="button" class="btn btn-xs btn-primary folderBtns" data-toggle="modal" data-target="#contribModal">View Contributors</button><br>
+            <div id="contribModal" class="modal fade" role="dialog">
+              <div class="modal-dialog">
+            
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Contributors for <%= currentFolder.name %></h4>
+                  </div>
+                  <div class="modal-body">
+                    <strong>Admin - <%= currentFolder.admin.username %></strong><br>
+                    <% currentFolder.contributors.forEach(function(contrib) { %>
+                        <%= contrib.username %>
+                        <% if (currentFolder.admin._id.equals(currentUser._id)) { %>
+                            <form onsubmit="return confirm('Press OK to remove user <%= contrib.username %> from folder <%= currentFolder.name %>.');" style='display:inline' action='/folders/<%= currentFolder._id %>/contributors/<%= contrib._id %>?_method=DELETE' method='POST'>
+                                <button class='btn btn-xs btn-link'>Remove</button>
+                            </form>
+                        <% } %>
+                        <br>
+                    <% }) %>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        <% } %>
+    </div>
+    <hr>
+    <div>
+    <div id='folderData'>
+    <% if (data != '') { %>
+        <% data.forEach(function(addressData) { %>
+            <div class="list-group">
+                <a href="/folders/<%= addressData.folder._id %>/addresses/<%=addressData.addr%>/" class="list-group-item">
+                    <span class='rightTrans'>
+                        <%= balances[addressData.addr].ntx %> Transactions -
+                        <% if (balances[addressData.addr].ntx - viewData[addressData.addr] > 0 ) { %>
+                            <strong><%= balances[addressData.addr].ntx - addressData.num %> Unseen</strong>
+                        <% } else { %>
+                            0 Unseen
+                        <% } %>
+                        <% if(addressData.user._id.equals(currentUser._id) || addressData.folder.admin.equals(currentUser._id)) { %>
+                            <form onsubmit="return confirm('Press OK to remove address <%= addressData.label %> from folder <%= currentFolder.name %>.');" style='display:inline' action='/folders/<%=addressData.folder._id%>/addresses/<%= addressData.addr %>?_method=DELETE' method='POST'>
+                                <button class="btn btn-danger btn-xs trash">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </form>
+                        <% } %>
+                    </span>
+                    
+                    <span class='balLabel'>
+                        <p>Remaining Balance</p>
+                        <span class="badge">
+                            <%= balances[addressData.addr].btc %> BTC - <%= balances[addressData.addr].usd %> USD
+                        </span>
+                    </span>
+                    <h3 class="list-group-item-heading addrLabel">
+                        <%= addressData.label %>
+                        <% if (currentFolder.name == 'General') { %>
+                            <small> From folder <%= addressData.folder.name %></small>
+                        <% } else { %>
+                            <small> Added by <%= addressData.user.username %></small>
+                        <% } %>
+                    </h3>
+                    
+                    <p class="list-group-item-text addrLabel">
+                        <%= addressData.addr %>
+                    </p>
+                </a>
+            </div>
+        <% }) %>
+        <% } else { %>
+            <em>Add addresses to this folder or create a new folder.</em>
+        <% } %>
+    </div>
+</div>
+<% include ../partials/footer %>
