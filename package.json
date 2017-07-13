@@ -1,6 +1,9 @@
 {
   "name": "blockchain-dashboard",
   "version": "1.0.0",
+  "engines": {
+    "node": "8.1.4"
+  },
   "description": "Simple dashboard to track Bitcoin transactions.",
   "main": "app.js",
   "scripts": {
