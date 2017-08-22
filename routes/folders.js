@@ -56,6 +56,7 @@ router.get('/folders/new', middleware.isLoggedIn, function(req, res) {
 
 // Shows folder page of specific folder. If folder ID isn't valid, goes to default (/folders).
 router.get('/folders/:folderid', [middleware.isLoggedIn, middleware.ownsFolder], function(req, res) {
+    console.log(req.params.folderid);
     var balances = {};
     var addresses = "";
     var folders = "";
