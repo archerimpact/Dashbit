@@ -90,7 +90,7 @@
         </div>
         <button id='backToReport' class='btn btn-primary' onclick='returnToTable()'>Back</button>
         <button id='showAdvancedBtn' class='btn btn-primary' onclick='showAdvanced(this)'>Show Advanced Search Settings</button>
-        <form id='explore' class='invisible' action='/folders/<%= folderID %>/addresses/<%= rootAddr %>/explore/<%= data.tx_index %>' method='GET'>
+        <form id='explore' class='invisible' action='/folders/<%= currentFolder._id %>/addresses/<%= rootAddr %>/explore/<%= data.tx_index %>' method='GET'>
             <hr>
             <input id='advanced-submit' type='submit' class='btn btn-success'>
             <div class="form-group exploreForm">
