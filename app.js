@@ -19,7 +19,8 @@ var addressRoutes = require('./routes/address'),
     utilRoutes = require('./routes/util');
 
 var url = process.env.DATABASEURL || "mongodb://localhost/blockchain_dashboard"
-mongoose.connect(url);app.use(bodyParser.urlencoded({extended: true}));
+mongoose.connect(url);
+app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
