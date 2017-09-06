@@ -476,6 +476,10 @@ body {
   float: right;
 }
 
+#folderTitle {
+  padding-top:10px;
+}
+
 #folderSelect {
   margin-left: 10px;
 }
