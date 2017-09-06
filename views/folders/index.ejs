@@ -37,6 +37,7 @@
         <% } %>
         </h3>
         <% if (currentFolder && currentFolder.name != 'General') { %>
+            <br>
             <p><strong>Description:</strong> <%= currentFolder.desc %></p>
         <% } %>
         <% if (currentFolder && currentFolder.admin._id.equals(currentUser._id) && currentFolder.name != 'General') { %>
