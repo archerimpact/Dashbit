@@ -145,7 +145,7 @@ router.post('/folders/:folderid/addresses', [middleware.isLoggedIn, middleware.o
                               generalFolder.save();
                           }
                           req.flash("success", "Address " + address.label + " added to folder " + specifiedFolder.name);
-                          res.redirect("/folders/" + specifiedFolder._id);
+                          res.redirect("/folders/" + specifiedFolder._id + "/" + req.body.address.addr + "/");
                       });
                   }
               });
