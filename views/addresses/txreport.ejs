@@ -22,7 +22,7 @@
                             <% var input = data.inputs[i] %>
                                 <tr>
                                     <td>
-                                        <a href='/addresses/<%= input.prev_out.addr %>/<%= currentFolder._id %>'>
+                                        <a href='/folders/<%= currentFolder._id %>/addresses/<%= input.prev_out.addr %>/'>
                                             <% if (labels[input.prev_out.addr]) { %>
                                                 <%= labels[input.prev_out.addr] %>
                                             <% } else { %>
@@ -55,7 +55,7 @@
                                 <% var output = data.out[i] %>
                                 <tr>
                                     <td>
-                                        <a href='/addresses/<%= output.addr %>/<%= currentFolder._id %>'>
+                                        <a href='/folders/<%= currentFolder._id %>/addresses/<%= output.addr %>/'>
                                             <% if (labels[output.addr]) { %>
                                                 <%= labels[output.addr] %>
                                             <% } else { %>
