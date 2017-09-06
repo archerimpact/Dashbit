@@ -159,7 +159,7 @@ router.post('/folders/:folderid/addresses', [middleware.isLoggedIn, middleware.o
 
 //Shows form to edit address information.
 router.get('/folders/:folderid/addresses/:addr/edit', [middleware.isLoggedIn, middleware.ownsFolder], function(req, res) {
-   Address.findOne({addr: req.params.addr}, function(err, address) {
+   Address.findOne({folder: req.params.folderid, addr: req.params.addr}, function(err, address) {
        if (err) {
            console.log(address);
        }
