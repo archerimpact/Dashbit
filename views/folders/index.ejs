@@ -111,7 +111,7 @@
                         <% if (currentFolder.name == 'General') { %>
                             <small> From folder <%= addressData.folder.name %></small>
                         <% } else { %>
-                            <small> Added by <%= addressData.user.username %></small>
+                            <small> Added by <%= addressData.user.username.split("@")[0] %></small>
                         <% } %>
                     </h3>
                     
