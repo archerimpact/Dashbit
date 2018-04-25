@@ -7,7 +7,7 @@ var Folder = require('../models/folder');
 
 router.get('/', function(req, res) {
     res.render('landing');
-})
+});
 
 router.get('/login', function(req, res) {
     if (req.isAuthenticated()) {
