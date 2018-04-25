@@ -5,7 +5,7 @@
     <div class='jumbotron'>
         <h1>Your Addresses</h1>
         <p>
-            <%= currentUser.username %>
+            <%= currentUser.username.split('@')[0] %>
         </p>
         
         <form action='/folders/<%= currentFolder._id %>/addresses/search' method='POST'>
@@ -33,7 +33,7 @@
         <% if (currentFolder.name == "General") { %>
             <small><em>     All addresses added by you</em></small>
         <% } else { %>
-            <small><em>     Admin: <%= currentFolder.admin.username %></em></small>
+            <small><em>     Admin: <%= currentFolder.admin.username.split('@')[0] %></em></small>
         <% } %>
         </h3>
         <% if (currentFolder && currentFolder.name != 'General') { %>
@@ -58,11 +58,11 @@
                     <h4 class="modal-title">Contributors for <%= currentFolder.name %></h4>
                   </div>
                   <div class="modal-body">
-                    <strong>Admin - <%= currentFolder.admin.username %></strong><br>
+                    <strong>Admin - <%= currentFolder.admin.username.split('@')[0] %></strong><br>
                     <% currentFolder.contributors.forEach(function(contrib) { %>
-                        <%= contrib.username %>
+                        <%= contrib.username.split('@')[0] %>
                         <% if (currentFolder.admin._id.equals(currentUser._id)) { %>
-                            <form onsubmit="return confirm('Press OK to remove user <%= contrib.username %> from folder <%= currentFolder.name %>.');" style='display:inline' action='/folders/<%= currentFolder._id %>/contributors/<%= contrib._id %>?_method=DELETE' method='POST'>
+                            <form onsubmit="return confirm('Press OK to remove user <%= contrib.username.split('@')[0] %> from folder <%= currentFolder.name %>.');" style='display:inline' action='/folders/<%= currentFolder._id %>/contributors/<%= contrib._id %>?_method=DELETE' method='POST'>
                                 <button class='btn btn-xs btn-link'>Remove</button>
                             </form>
                         <% } %>
